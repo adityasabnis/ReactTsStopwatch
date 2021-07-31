@@ -1,2 +1,1 @@
-# ReactTsStopwatch
-Stopwatch in React, TS
+# Javascript Stopwatch

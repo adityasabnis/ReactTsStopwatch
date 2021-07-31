@@ -1,0 +1,41 @@
+.App {
+  text-align: center;
+}
+
+.App .container {
+  width: 90%;
+  border: 15px solid black;
+  padding: 50px;
+  margin: 20px;
+  position: absolute;
+}
+
+.container .container-left, .container .container-right {
+  width: 40%;
+  border: 15px solid teal;
+  position: relative;
+  padding: 50px;
+  margin: 20px;
+}
+
+.container .container-left {
+  float: left;
+}
+
+.container .container-right {
+  float: right;
+}
+
+.container button {
+  font-size: 18px;
+  background-color: lightgray;
+}
+
+.container .start-btn {
+  background-color: lightgreen;
+}
+
+.container .description {
+  font-weight: 700;
+  text-decoration: underline;
+}
