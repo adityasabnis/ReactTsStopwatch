@@ -25,20 +25,22 @@ class Stopwatch extends Component<StopwatchProps, StopwatchState> {
     };
   }
 
+  componentWillUnmount() {
+    if (this.incrementer) clearInterval(this.incrementer);
+  }
+
   handleStartClick = () => {
     // If you click multiple times before the button transition, multiple times are set in motion
     // Only start an interval if incrementer is null
     // Which is on initial state and when explicitly set to null in stop
     if (this.incrementer !== null) return;
 
-    this.incrementer = setInterval(
-      () =>
-        // Since setState is async, we should use the prevState value instead of directly accessing it from this.state
-        this.setState((prevState: any) => ({
-          secondsElapsed: prevState.secondsElapsed + 1,
-        })),
-      1000
-    );
+    this.incrementer = setInterval(() => {
+      // Since setState is async, we should use the prevState value instead of directly accessing it from this.state
+      this.setState((prevState: any) => ({
+        secondsElapsed: prevState.secondsElapsed + 1,
+      }));
+    }, 1000);
   };
 
   handleStopClick = () => {
@@ -64,6 +66,12 @@ class Stopwatch extends Component<StopwatchProps, StopwatchState> {
       this.laps.splice(index, 1);
       // Since we have memoized Laps component, the re-render is not triggered if will only splice without changing the value array reference
       this.laps = [...this.laps];
+
+      // Need to re-render to delete laps when timer is stopped
+      // As render is only called as long as the timer is going since it is a state attribute
+      if (this.incrementer === null) {
+        this.forceUpdate();
+      }
     };
   };
 
@@ -91,12 +99,20 @@ class Stopwatch extends Component<StopwatchProps, StopwatchState> {
         )}
 
         {secondsElapsed !== 0 && this.incrementer !== null ? (
-          <button type="button" onClick={this.handleLapClick}>
+          <button
+            type="button"
+            className="lap-btn"
+            onClick={this.handleLapClick}
+          >
             Lap
           </button>
         ) : null}
         {secondsElapsed !== 0 && this.incrementer === null ? (
-          <button type="button" onClick={this.handleResetClick}>
+          <button
+            type="button"
+            className="reset-btn"
+            onClick={this.handleResetClick}
+          >
             Reset
           </button>
         ) : null}

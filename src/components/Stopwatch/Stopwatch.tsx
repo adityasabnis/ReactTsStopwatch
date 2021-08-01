@@ -2,6 +2,7 @@ import { Component, ClassAttributes } from "react";
 
 const formattedSeconds = (sec: number) =>
   // Can use `` interpolation instead of using + to form result string
+  // Also can be moved to util as this can be a re-usable helper
   Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2);
 
 interface StopwatchProps extends ClassAttributes<Stopwatch> {
@@ -9,7 +10,7 @@ interface StopwatchProps extends ClassAttributes<Stopwatch> {
 }
 
 // StateType is any instead of having a defined type structure
-
+// Fixed in Refactored StopWatch
 class Stopwatch extends Component<StopwatchProps, any> {
   incrementer: any;
   laps: any[];
@@ -17,24 +18,31 @@ class Stopwatch extends Component<StopwatchProps, any> {
   constructor(props: StopwatchProps) {
     super(props);
 
-    // Explicitly setting incrementer to null to conditional in handleStartClick
+    // Explicitly setting incrementer = null for conditional check in handleStartClick (defaults to undefined)
     this.incrementer = null;
     this.laps = [];
 
     this.state = {
       secondsElapsed: props.initialSeconds,
       // Same stopwatch result can be derived without `lastClearedIncrementer` additional state attribute
+      // Fixed in Refactored StopWatch
       lastClearedIncrementer: null,
     };
 
     // Bind current this to the stopwatch functions
     // As functions declared in JS with function keyword use the `this` from where they are executed and not where they are defined
-    // Such thing can be mitigated with arrow functions
+    // Such thing can be mitigated with arrow functions (Implemented in Refactored StopWatch using arrow functions)
     this.handleStartClick = this.handleStartClick.bind(this);
     this.handleStopClick = this.handleStopClick.bind(this);
     this.handleResetClick = this.handleResetClick.bind(this);
     this.handleLabClick = this.handleLabClick.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
+  }
+
+  componentWillUnmount() {
+    if (this.incrementer) {
+      clearInterval(this.incrementer);
+    }
   }
 
   handleStartClick() {
@@ -69,20 +77,28 @@ class Stopwatch extends Component<StopwatchProps, any> {
   }
 
   // Typo `handleLabClick` -> `handleLapClick`
+  // Fixed in Refactored StopWatch
   handleLabClick() {
     this.laps = this.laps.concat([this.state.secondsElapsed]);
   }
 
   handleDeleteClick(index: number) {
-    return () => this.laps.splice(index, 1);
-  }
+    return () => {
+      this.laps.splice(index, 1);
+      const { secondsElapsed, lastClearedIncrementer } = this.state;
 
+      if (secondsElapsed !== 0 && this.incrementer === lastClearedIncrementer) {
+        return this.forceUpdate();
+      }
+    };
+  }
   render() {
     const { secondsElapsed, lastClearedIncrementer } = this.state;
 
     return (
       <div className="stopwatch">
         <h1 className="stopwatch-timer">{formattedSeconds(secondsElapsed)}</h1>
+        {/* The Action buttons can be rendered in a separate function for readability (Fixed in Refactored StopWatch) */}
         {secondsElapsed === 0 || this.incrementer === lastClearedIncrementer ? (
           <button
             type="button"
@@ -101,12 +117,20 @@ class Stopwatch extends Component<StopwatchProps, any> {
           </button>
         )}
         {secondsElapsed !== 0 && this.incrementer !== lastClearedIncrementer ? (
-          <button type="button" onClick={this.handleLabClick}>
+          <button
+            className="lap-btn"
+            type="button"
+            onClick={this.handleLabClick}
+          >
             Lap
           </button>
         ) : null}
         {secondsElapsed !== 0 && this.incrementer === lastClearedIncrementer ? (
-          <button type="button" onClick={this.handleResetClick}>
+          <button
+            className="reset-btn"
+            type="button"
+            onClick={this.handleResetClick}
+          >
             Reset
           </button>
         ) : null}
@@ -127,10 +151,14 @@ class Stopwatch extends Component<StopwatchProps, any> {
   }
 }
 
-const Lap = (props: { index: number; lap: number; onDelete: () => {} }) => (
+// Can be a separate component in it's own file for cleaner impl
+// Fixed in Refactored StopWatch
+const Lap = (props: { index: number; lap: number; onDelete: any }) => (
   <div key={props.index} className="stopwatch-lap">
-    <strong>{props.index}</strong>/ {formattedSeconds(props.lap)}{" "}
-    <button onClick={props.onDelete}> X </button>
+    <strong>{props.index}</strong>/ {formattedSeconds(props.lap)}
+    <button className="delete-lap" onClick={props.onDelete}>
+      {" X "}
+    </button>
   </div>
 );
 
