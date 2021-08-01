@@ -21,3 +21,6 @@ npm start
 # Tests
 npm run test
 ```
+
+## CodeSandbox
+https://codesandbox.io/s/ts-stopwatch-xzsg4
