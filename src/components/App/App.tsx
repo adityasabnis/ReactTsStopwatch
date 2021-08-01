@@ -1,5 +1,5 @@
-import Stopwatch from "./components/Stopwatch"; // Fixed Stopwatch
-import Stopwatch2 from "./components/Stopwatch2"; // Refactored Stopwatch
+import Stopwatch from "../Stopwatch"; // Fixed Stopwatch
+import Stopwatch2 from "../Stopwatch2"; // Refactored Stopwatch
 import "./App.css";
 
 const App = () => {

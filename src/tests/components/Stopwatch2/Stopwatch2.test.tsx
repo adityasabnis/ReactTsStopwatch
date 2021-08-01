@@ -1,6 +1,5 @@
-import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import Stopwatch2 from "../../../components/Stopwatch2/Stopwatch2";
+import Stopwatch2 from "../../../components/Stopwatch2";
 
 describe("Stopwatch2", () => {
   describe("initial render", () => {

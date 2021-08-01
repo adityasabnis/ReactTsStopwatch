@@ -1,6 +1,7 @@
-import React from "react";
+// Note: Tests for Stopwatch and Stopwatch2 are identical
+
 import { render, fireEvent } from "@testing-library/react";
-import Stopwatch from "../../../components/Stopwatch/Stopwatch";
+import Stopwatch from "../../../components/Stopwatch";
 
 describe("Stopwatch", () => {
   describe("initial render", () => {
