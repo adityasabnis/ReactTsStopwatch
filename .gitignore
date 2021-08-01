@@ -1,5 +1,9 @@
 /node_modules
-/coverage
 /build
 .DS_Store
 .vsCode
+
+# Coverage
+.nyc_output
+coverage
+*.lcov

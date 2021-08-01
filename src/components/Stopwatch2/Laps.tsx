@@ -9,19 +9,20 @@ interface LapsProps {
 const Laps: React.FunctionComponent<LapsProps> = ({
   laps,
   handleDeleteClick,
-}) => (
-  <div className="stopwatch-laps">
-    {laps.length
-      ? laps.map((lap, i) => (
-          <Lap
-            key={`lap-item-${i + 1}`}
-            index={i}
-            value={lap}
-            onDelete={handleDeleteClick(i)}
-          ></Lap>
-        ))
-      : null}
-  </div>
-);
-
+}) => {
+  return (
+    <div className="stopwatch-laps">
+      {laps.length
+        ? laps.map((lap, i) => (
+            <Lap
+              key={`lap-item-${i + 1}`}
+              index={i + 1}
+              value={lap}
+              onDelete={handleDeleteClick(i)}
+            ></Lap>
+          ))
+        : null}
+    </div>
+  );
+};
 export default React.memo(Laps);
