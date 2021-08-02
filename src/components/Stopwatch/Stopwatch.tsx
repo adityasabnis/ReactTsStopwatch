@@ -29,7 +29,7 @@ class Stopwatch extends Component<StopwatchProps, any> {
       lastClearedIncrementer: null,
     };
 
-    // Bind current this to the stopwatch functions
+    // Bind current `this` to the stopwatch functions
     // As functions declared in JS with function keyword use the `this` from where they are executed and not where they are defined
     // Such thing can be mitigated with arrow functions (Implemented in Refactored StopWatch using arrow functions)
     this.handleStartClick = this.handleStartClick.bind(this);
@@ -46,7 +46,7 @@ class Stopwatch extends Component<StopwatchProps, any> {
   }
 
   handleStartClick() {
-    // If you click multiple times before the button transition, multiple times are set in motion
+    // If you click multiple times before the button transition, multiple setIntervals are set in motion
     // Following check only start a new interval if incrementer === lastClearedIncrementer
     // which only occurs on the initial state and when the stopwatch is stopped
     if (this.incrementer !== this.state.lastClearedIncrementer) return;
