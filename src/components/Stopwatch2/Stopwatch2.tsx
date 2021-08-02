@@ -12,7 +12,7 @@ type StopwatchState = {
 
 class Stopwatch extends Component<StopwatchProps, StopwatchState> {
   incrementer: any;
-  laps: any[];
+  laps: Array<number>;
 
   constructor(props: StopwatchProps) {
     super(props);
